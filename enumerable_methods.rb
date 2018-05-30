@@ -37,6 +37,7 @@ module Enumerable
     end
     return false
   end
+  
 end
 # Testing below
 puts "Testing my_each"
