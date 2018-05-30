@@ -37,6 +37,7 @@ module Enumerable
     end
     return false
   end
+
   def my_none?
     self.my_each do |value|
       if yield(value)
@@ -44,6 +45,30 @@ module Enumerable
       end
     end
     return true
+  end
+
+  def my_count(x = nil)
+    #case 3
+    count = 0
+    if block_given?
+      self.my_each do |value|
+        if yield(value)
+          count += 1
+        end
+      end
+      return count
+    end
+    #case 1
+    return self.length if x.nil?
+    #case 2
+    if x
+      self.my_each do |value|
+        if x == value
+          count += 1
+        end
+      end
+      return count
+    end
   end
 
 end
@@ -81,3 +106,7 @@ result = [2,2,1,2].my_none? do |value|
   value == 1
 end
 puts result
+
+puts "Testing my_count"
+puts [1,2,3,2,2,3,3,3].my_count(5)
+puts [1,2,3,2,2,3,3,3].my_count {|value| value == 3}
