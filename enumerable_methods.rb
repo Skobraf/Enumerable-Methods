@@ -92,6 +92,11 @@ module Enumerable
       end
     end
     return stored
+    end
+
+    def multiply_els(x)
+      x.my_inject(1) {|result, item| result*item}
+    end
 
 end
 # Testing below
@@ -139,3 +144,6 @@ puts [2,4,6].my_map {|x| x**2}
 puts "Testing my_inject"
 puts [1, 2, 3, 4].my_inject(2) { |result, element| result + element }
 puts [1, 2, 3, 4].inject(2) { |result, element| result + element }
+
+puts "Testing multiply_els"
+puts multiply_els([2, 4, 5])
