@@ -10,6 +10,16 @@ module Enumerable
       yield(self[i], i)
     end
   end
+
+  def my_select
+    new_arr = []
+    self.my_each do |value|
+      if(yield)
+        new_arr << value
+      end
+    end
+  end
+
 end
 
 [1,2,3].my_each do |x|
@@ -18,4 +28,8 @@ end
 
 [1,2,3].my_each_with_index do |value,index|
   puts "the value is: #{value} with the index of : #{index}"
+end
+
+evenNumbers = [1,2,3,5,6,7,8].my_select do |value|
+  value % 2 == 0
 end
