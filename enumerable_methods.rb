@@ -37,7 +37,15 @@ module Enumerable
     end
     return false
   end
-  
+  def my_none?
+    self.my_each do |value|
+      if yield(value)
+        return false
+      end
+    end
+    return true
+  end
+
 end
 # Testing below
 puts "Testing my_each"
@@ -64,6 +72,12 @@ puts result
 
 puts "Testing my_any?"
 result = [2,2,2,2].my_any? do |value|
+  value == 1
+end
+puts result
+
+puts "Testing my_none?"
+result = [2,2,1,2].my_none? do |value|
   value == 1
 end
 puts result
