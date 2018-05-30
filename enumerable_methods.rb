@@ -98,6 +98,14 @@ module Enumerable
       x.my_inject(1) {|result, item| result*item}
     end
 
+    def my_map_proc(&proc)
+      new_arr = []
+      self.my_each do |value|
+        new_arr.push(proc.call(value))
+      end
+      return new_arr
+    end
+
 end
 # Testing below
 puts "Testing my_each"
@@ -147,3 +155,7 @@ puts [1, 2, 3, 4].inject(2) { |result, element| result + element }
 
 puts "Testing multiply_els"
 puts multiply_els([2, 4, 5])
+
+puts "Testing my_map with proc"
+new_proc = Proc.new {|x| x**2}
+puts [2,4,6].my_map_proc(&new_proc)
