@@ -14,10 +14,11 @@ module Enumerable
   def my_select
     new_arr = []
     self.my_each do |value|
-      if(yield)
-        new_arr << value
+      if yield(value)
+        new_arr.push(value)
       end
     end
+    return new_arr
   end
 
   def my_all?
@@ -71,6 +72,30 @@ module Enumerable
     end
   end
 
+  def my_map_proc_block(&proc)
+    if proc
+      new_arr = []
+      self.my_each do |value|
+        new_arr.push(proc.call(value))
+      end
+      return new_arr
+    elsif block_given?
+      new_arr = []
+      self.my_each do |value|
+        new_arr.push(yield(value))
+      end
+      return new_arr
+    end
+  end
+
+  def my_map_proc(&proc)
+    new_arr = []
+    self.my_each do |value|
+      new_arr.push(proc.call(value))
+    end
+    return new_arr
+  end
+
   def my_map
     new_arr = []
     self.my_each do |value|
@@ -80,6 +105,8 @@ module Enumerable
   end
 
   def my_inject(x)
+    # Following:
+    # http://blog.jayfields.com/2008/03/ruby-inject.html
     result = x
     stored = 0
     first_time = true
@@ -92,21 +119,14 @@ module Enumerable
       end
     end
     return stored
-    end
-
-    def multiply_els(x)
-      x.my_inject(1) {|result, item| result*item}
-    end
-
-    def my_map_proc(&proc)
-      new_arr = []
-      self.my_each do |value|
-        new_arr.push(proc.call(value))
-      end
-      return new_arr
-    end
-
+  end
+#end of the Enumerable Method
 end
+
+def multiply_els(x)
+  x.my_inject(1) {|result, item| result*item}
+end
+
 # Testing below
 puts "Testing my_each"
 [1,2,3].my_each do |x|
@@ -159,3 +179,7 @@ puts multiply_els([2, 4, 5])
 puts "Testing my_map with proc"
 new_proc = Proc.new {|x| x**2}
 puts [2,4,6].my_map_proc(&new_proc)
+
+puts "Testing my_map_proc_block (proc first, block second)"
+puts [2,4,6].my_map_proc_block(&new_proc)
+puts [2,4,6].my_map_proc_block {|x| x**2}
